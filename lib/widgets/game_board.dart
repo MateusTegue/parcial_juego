@@ -12,7 +12,6 @@ class GameBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<GameController>(
       builder: (context, controller, child) {
-        // Cambié 'gameController' por 'controller'
         return GestureDetector(
           onVerticalDragUpdate: (details) {
             if (details.delta.dy > 0) {

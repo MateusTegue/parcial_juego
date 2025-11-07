@@ -3,11 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirebaseScoreService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static const String _leaderboardCollection = 'leaderboard';
-  static const String _gameStatsCollection = 'game_stats';
 
-  // ==================== GUARDAR PUNTAJE ====================
-
-  /// Guardar puntaje en el leaderboard global
   static Future<void> saveScore({
     required int score,
     required String playerName,
@@ -17,19 +13,14 @@ class FirebaseScoreService {
         'score': score,
         'playerName': playerName,
         'timestamp': FieldValue.serverTimestamp(),
-        'device': 'mobile', // Opcional: identificar plataforma
+        'device': 'mobile',
       });
-
-      print('✅ Puntaje guardado en Firebase: $score');
     } catch (e) {
-      print('❌ Error guardando puntaje: $e');
+      // Manejar error si es necesario
       rethrow;
     }
   }
 
-  // ==================== OBTENER TOP PUNTAJES ====================
-
-  /// Obtener el top 10 del leaderboard
   static Future<List<Map<String, dynamic>>> getTopScores({
     int limit = 10,
   }) async {
@@ -50,7 +41,7 @@ class FirebaseScoreService {
         };
       }).toList();
     } catch (e) {
-      print('❌ Error obteniendo top scores: $e');
+      // Manejar error si es necesario
       return [];
     }
   }
@@ -60,9 +51,6 @@ class FirebaseScoreService {
     return await getTopScores(limit: 100);
   }
 
-  // ==================== OBTENER PUNTAJE MÁS ALTO ====================
-
-  /// Obtener el puntaje más alto de todos los tiempos
   static Future<int> getHighestScore() async {
     try {
       final snapshot = await _firestore
@@ -75,7 +63,6 @@ class FirebaseScoreService {
 
       return snapshot.docs.first.data()['score'] ?? 0;
     } catch (e) {
-      print('❌ Error obteniendo highest score: $e');
       return 0;
     }
   }
@@ -103,7 +90,6 @@ class FirebaseScoreService {
         };
       }).toList();
     } catch (e) {
-      print('❌ Error obteniendo puntajes del jugador: $e');
       return [];
     }
   }
@@ -122,12 +108,10 @@ class FirebaseScoreService {
 
       return snapshot.docs.first.data()['score'] ?? 0;
     } catch (e) {
-      print('❌ Error obteniendo high score del jugador: $e');
       return 0;
     }
   }
 
-  /// Obtener ranking/posición de un jugador
   static Future<int> getPlayerRank(String playerName) async {
     try {
       final playerScore = await getPlayerHighScore(playerName);
@@ -141,14 +125,10 @@ class FirebaseScoreService {
       // La posición es la cantidad de jugadores con mayor score + 1
       return snapshot.docs.length + 1;
     } catch (e) {
-      print('❌ Error obteniendo rank del jugador: $e');
       return 0;
     }
   }
 
-  // ==================== ESTADÍSTICAS GLOBALES ====================
-
-  /// Obtener estadísticas globales del juego
   static Future<Map<String, dynamic>> getGlobalStats() async {
     try {
       final snapshot = await _firestore
@@ -182,7 +162,6 @@ class FirebaseScoreService {
         'highestScore': highestScore,
       };
     } catch (e) {
-      print('❌ Error obteniendo estadísticas globales: $e');
       return {
         'totalGames': 0,
         'totalPlayers': 0,
@@ -192,9 +171,6 @@ class FirebaseScoreService {
     }
   }
 
-  // ==================== STREAM EN TIEMPO REAL ====================
-
-  /// Stream para obtener el leaderboard en tiempo real
   static Stream<List<Map<String, dynamic>>> getTopScoresStream({
     int limit = 10,
   }) {
@@ -216,9 +192,6 @@ class FirebaseScoreService {
         });
   }
 
-  // ==================== UTILIDADES ====================
-
-  /// Verificar si es un nuevo récord personal
   static Future<bool> isNewPersonalRecord(
     String playerName,
     int newScore,
@@ -247,10 +220,8 @@ class FirebaseScoreService {
         batch.delete(doc.reference);
       }
       await batch.commit();
-
-      print('✅ ${snapshot.docs.length} puntajes antiguos eliminados');
     } catch (e) {
-      print('❌ Error eliminando puntajes antiguos: $e');
+      // Manejar error si es necesario
     }
   }
 }
