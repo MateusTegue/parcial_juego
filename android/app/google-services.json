@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "704952785545",
+    "project_id": "parcialjuego",
+    "storage_bucket": "parcialjuego.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704952785545:android:aae355f6ddda8810dcc458",
+        "android_client_info": {
+          "package_name": "com.example.parcial_juego"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1iMLR7tN_-XzvRrHK-db0z7Lcah88Ykk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
